@@ -24,10 +24,14 @@ function accept(req, res) {
 
 function onSocketConnect(ws) {
   clients.add(ws);
-  console.log(`новое подключение`);
+  console.log(`New websocket connection`);
 
-  ws.on('сообщение', function(message) {
-    console.log(`получено сообщение: ${message}`);
+  ws.on('request', () => {
+    console.log('request');
+  });
+
+  ws.on('message', function(message) {
+    console.log(`Message received: ${message}`);
 
     message = message.slice(0, 50); // максимальная длина сообщения 50
 
@@ -36,8 +40,8 @@ function onSocketConnect(ws) {
     }
   });
 
-  ws.on('закрыть', function() {
-    console.log(`подключение закрыто`);
+  ws.on('close', function() {
+    console.log(`Websocket connection closed`);
     clients.delete(ws);
   });
 }
